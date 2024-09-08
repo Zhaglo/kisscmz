@@ -29,3 +29,29 @@
   | MIREA |
   +-------+
   ![Снимок экрана от 2024-09-02 17-43-27](https://github.com/user-attachments/assets/3dee2459-5baf-4ee4-8e10-70b5c5a37d62)
+
+ЗАДАЧА 4. Написать программу для вывода всех идентификаторов (по правилам C/C++ или Java) в файле (без повторений).
+  РЕШЕНИЕ: grep -o '\b[a-zA-Z_][a-zA-Z0-9_]*\b' Main.java | sort | uniq
+  ![image](https://github.com/user-attachments/assets/1fe27d0c-6ad5-4da9-9eb9-c2890a93d449)
+
+ЗАДАЧА 5. Написать программу для регистрации пользовательской команды (правильные права доступа и копирование в /usr/local/bin).
+  РЕШЕНИЕ: 
+
+ЗАДАЧА 7. Написать программу для нахождения файлов-дубликатов (имеющих 1 или более копий содержимого) по заданному пути (и подкаталогам).
+  РЕШЕНИЕ: find /home/igor/Загрузки/ -type f -exec md5sum {} + | sort | uniq -w32 -dD
+  ![image](https://github.com/user-attachments/assets/507fb24b-76c5-4c0c-b0d4-22ad03daab27)
+
+ЗАДАЧА 8. Написать программу, которая находит все файлы в данном каталоге с расширением, указанным в качестве аргумента и архивирует все эти файлы в архив tar.
+  РЕШЕНИЕ: find . -name "*.sh" -print0 | tar -czvf archive.tar.gz --null -T -
+  ![image](https://github.com/user-attachments/assets/503126c4-05d8-4782-9941-6650b3fedea8)
+
+ЗАДАЧА 9. Написать программу, которая заменяет в файле последовательности из 4 пробелов на символ табуляции. Входной и выходной файлы задаются аргументами.
+  РЕШЕНИЕ: sed 's/    /\t/g' "text1.txt" > "text2.txt"
+  ![image](https://github.com/user-attachments/assets/6acff5a2-6906-4c72-bd85-519fc6f6ddd2)
+  ![image](https://github.com/user-attachments/assets/c4658cf1-66fa-43ef-bdaf-fdc62b613284)
+
+ЗАДАЧА 10. Написать программу, которая выводит названия всех пустых текстовых файлов в указанной директории. Директория передается в программу параметром.
+  РЕШЕНИЕ: find . -type f -empty -name "*.txt"
+  ![image](https://github.com/user-attachments/assets/d0348a7c-e38e-4b3e-8476-d8907a3039cc)
+
+
