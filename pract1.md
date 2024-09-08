@@ -35,7 +35,29 @@
   ![image](https://github.com/user-attachments/assets/1fe27d0c-6ad5-4da9-9eb9-c2890a93d449)
 
 ЗАДАЧА 5. Написать программу для регистрации пользовательской команды (правильные права доступа и копирование в /usr/local/bin).
+  РЕШЕНИЕ: sudo cp "$1" /home/igor/bin/
+          chmod +x reg.sh
+          ./reg.sh file.sh
+          
+  ![image](https://github.com/user-attachments/assets/efea722b-9181-4583-a8a6-d1327968cdca)
+  ![image](https://github.com/user-attachments/assets/16fc7e30-00a5-4a56-94fd-538831cd2769)
+
+ЗАДАЧА 6. Написать программу для проверки наличия комментария в первой строке файлов с расширением c, js и py.
   РЕШЕНИЕ: 
+  for file in "$@"; do
+  if [[ "$file" =~ \.(c|js|py)$ ]]; then
+    first_line=$(head -n 1 "$file")
+    if [[ "$first_line" =~ ^# ]] || [[ "$first_line" =~ ^// ]]; then
+      echo "$file has a comment in the first line."
+    else
+      echo "$file does not have a comment in the first line."
+    fi
+  fi
+  done
+
+  ./go.sh ~/PycharmProjects/test/main.py
+  ![Снимок экрана от 2024-09-08 22-41-08](https://github.com/user-attachments/assets/c376673f-52e3-4d52-9959-c6281230150b)
+  ![Снимок экрана от 2024-09-08 22-41-27](https://github.com/user-attachments/assets/90ba2064-e887-4e1f-a0ac-fbcdeb2fe1dd)
 
 ЗАДАЧА 7. Написать программу для нахождения файлов-дубликатов (имеющих 1 или более копий содержимого) по заданному пути (и подкаталогам).
   РЕШЕНИЕ: find /home/igor/Загрузки/ -type f -exec md5sum {} + | sort | uniq -w32 -dD
@@ -44,6 +66,8 @@
 ЗАДАЧА 8. Написать программу, которая находит все файлы в данном каталоге с расширением, указанным в качестве аргумента и архивирует все эти файлы в архив tar.
   РЕШЕНИЕ: find . -name "*.sh" -print0 | tar -czvf archive.tar.gz --null -T -
   ![image](https://github.com/user-attachments/assets/503126c4-05d8-4782-9941-6650b3fedea8)
+  ![Снимок экрана от 2024-09-08 22-34-10](https://github.com/user-attachments/assets/b7b3a624-493a-4416-98a2-c0c0f0b7c626)
+
 
 ЗАДАЧА 9. Написать программу, которая заменяет в файле последовательности из 4 пробелов на символ табуляции. Входной и выходной файлы задаются аргументами.
   РЕШЕНИЕ: sed 's/    /\t/g' "text1.txt" > "text2.txt"
