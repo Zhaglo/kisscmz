@@ -48,10 +48,13 @@
 
 ЗАДАЧА 6. Написать программу для проверки наличия комментария в первой строке файлов с расширением c, js и py.
   РЕШЕНИЕ: 
+
   for file in "$@"; do
   if [[ "$file" =~ \.(c|js|py)$ ]]; then
     first_line=$(head -n 1 "$file")
-    if [[ "$first_line" =~ ^# ]] || [[ "$first_line" =~ ^// ]]; then
+    if [[ "$file" =~ \.c$ && "$first_line" =~ ^// ]] || \
+       [[ "$file" =~ \.js$ && "$first_line" =~ ^// ]] || \
+       [[ "$file" =~ \.py$ && "$first_line" =~ ^# ]]; then
       echo "$file has a comment in the first line."
     else
       echo "$file does not have a comment in the first line."
