@@ -61,7 +61,7 @@
 
   ./go.sh ~/PycharmProjects/test/main.py
   
-  ![Снимок экрана от 2024-09-08 22-41-08](https://github.com/user-attachments/assets/c376673f-52e3-4d52-9959-c6281230150b)
+  ![image](https://github.com/user-attachments/assets/32348ac8-3d2e-4ffb-ad90-ee32da898346)
   ![Снимок экрана от 2024-09-08 22-41-27](https://github.com/user-attachments/assets/90ba2064-e887-4e1f-a0ac-fbcdeb2fe1dd)
 
 ЗАДАЧА 7. Написать программу для нахождения файлов-дубликатов (имеющих 1 или более копий содержимого) по заданному пути (и подкаталогам).
