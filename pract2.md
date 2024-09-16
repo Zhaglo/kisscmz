@@ -42,3 +42,19 @@
   npm install
   
   ![image](https://github.com/user-attachments/assets/61249034-d570-4297-a83c-c0c6793fd9c3)
+
+
+ЗАДАЧА 3. Сформировать graphviz-код и получить изображения зависимостей matplotlib и express.
+  РЕШЕНИЕ: 
+  dot -Tpng express_dependencies.dot -o express_dependencies.png
+  dot -Tpng matplotlib_dependencies.dot -o matplotlib_dependencies.png
+
+  ![image](https://github.com/user-attachments/assets/ea544ab2-652f-410e-93d3-134acf82f304)
+  ![image](https://github.com/user-attachments/assets/4143d6b5-76fb-4683-877f-6c8f738dfe2f)
+  ![express_dependencies](https://github.com/user-attachments/assets/01837661-91c1-4ace-af58-6602f6140ae9)
+  ![matplotlib_dependencies](https://github.com/user-attachments/assets/a8c99236-818a-4be8-9c90-772eb0007a50)
+
+
+ЗАДАЧА 4. Изучить основы программирования в ограничениях. Установить MiniZinc, разобраться с основами его синтаксиса и работы в IDE.
+Решить на MiniZinc задачу о счастливых билетах. Добавить ограничение на то, что все цифры билета должны быть различными (подсказка: используйте all_different). Найти минимальное решение для суммы 3 цифр.
+  РЕШЕНИЕ: 
