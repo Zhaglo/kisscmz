@@ -31,8 +31,7 @@
   npm show express
   ```
 
-  ![image](https://github.com/user-attachments/assets/61053961-076d-40dd-bb6c-8da8fa74de16)
-
+```
   name: Имя пакета.
   version: Текущая версия пакета.
   description: Краткое описание пакета.
@@ -44,6 +43,9 @@
   repository: URL репозитория, в котором хранится код проекта.
   author: Имя и контактная информация автора.
   keywords: Список ключевых слов, связанных с проектом, которые могут помочь найти его в каталоге NPM.
+```
+
+![image](https://github.com/user-attachments/assets/61053961-076d-40dd-bb6c-8da8fa74de16)
 
   Получение пакета прямо из репозитория:
 
