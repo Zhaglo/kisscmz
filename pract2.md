@@ -181,7 +181,7 @@
 
   РЕШЕНИЕ:
   
-  # Пример структуры данных с зависимостями и версиями
+  // Пример структуры данных с зависимостями и версиями
   packages = {
       "root": {"dependencies": ["foo", "target"], "version": None},
       "foo": {"dependencies": ["left", "right"], "version": None},
@@ -193,15 +193,12 @@
   
   def generate_minizinc_code(packages):
       package_names = ', '.join(packages.keys())
-  
-      # Генерация массива установленных пакетов
+      // Генерация массива установленных пакетов
       minizinc_code = f"enum PACKAGES = {{{package_names}}};\n"
       minizinc_code += "array[PACKAGES] of var 0..1: installed;\n\n"
-  
-      # Добавляем условие для root
+      // Добавляем условие для root
       minizinc_code += "constraint installed[root] == 1;\n"
-  
-      # Генерация ограничений
+      // Генерация ограничений
       for package, details in packages.items():
           dependencies = details["dependencies"]
           if dependencies:
@@ -212,19 +209,16 @@
                       dep_constraints.append(f"installed[{dep_name}] == 1")
                   else:
                       dep_constraints.append(f"installed[{dep}] == 1")
-  
               constraint = "constraint installed[{}] == 1 -> ({});\n".format(
                   package, ' /\\ '.join(dep_constraints)
               )
               minizinc_code += constraint
-  
       minizinc_code += "\nsolve minimize sum(installed);\n"
       minizinc_code += 'output ["Installed packages: ", show(installed)];\n'
-  
       return minizinc_code
   
   
-  # Генерация и вывод MiniZinc кода
+  // Генерация и вывод MiniZinc кода
   minizinc_code = generate_minizinc_code(packages)
   print(minizinc_code)
 
