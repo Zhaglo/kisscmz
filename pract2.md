@@ -59,6 +59,28 @@
 Решить на MiniZinc задачу о счастливых билетах. Добавить ограничение на то, что все цифры билета должны быть различными (подсказка: используйте all_different). Найти минимальное решение для суммы 3 цифр.
   РЕШЕНИЕ: 
 
+  include "alldifferent.mzn";  % Подключаем библиотеку для alldifferent
+
+  % Определяем массив для хранения 6 цифр билета
+  array[1..6] of var 0..9: digits;
+  
+  % Ограничение: все цифры должны быть различными
+  constraint alldifferent(digits);
+  
+  % Ограничение: сумма первых трёх цифр должна равняться сумме последних трёх
+  constraint sum(digits[1..3]) = sum(digits[4..6]);
+  
+  % Целевая функция: минимизируем сумму первых трёх цифр
+  solve minimize sum(digits[1..3]);
+  
+  % Выводим результат
+  output [
+      "Digits: ", show(digits), 
+      "\nSum of first 3 digits: ", show(sum(digits[1..3])), 
+      "\nSum of last 3 digits: ", show(sum(digits[4..6]))
+  ];
+
+
   ![Снимок экрана 2024-09-22 214850](https://github.com/user-attachments/assets/5b4ab1ef-1238-47aa-8c17-3f6a9ae03118)
   ![Снимок экрана 2024-09-22 214931](https://github.com/user-attachments/assets/9923e75c-83c8-4736-bb04-6b51e5803d12)
 
@@ -66,6 +88,44 @@
 ЗАДАЧА 5. Решить на MiniZinc задачу о зависимостях пакетов для рисунка, приведенного ниже. https://github.com/true-grue/kisscm/blob/main/pract/images/pubgrub.png
 
   РЕШЕНИЕ: 
+
+  % Определяем пакеты
+  enum PACKAGES = {
+      root, 
+      menu_1_0_0, menu_1_1_0, menu_1_2_0, menu_1_3_0, menu_1_4_0, menu_1_5_0, 
+      dropdown_2_0_0, dropdown_2_1_0, dropdown_2_2_0, dropdown_2_3_0, dropdown_1_8_0,
+      icons_1_0_0, icons_2_0_0
+  };
+  
+  % Переменные, указывающие, установлен ли пакет (1) или нет (0)
+  array[PACKAGES] of var 0..1: installed;
+  
+  % Обязательно устанавливаем root
+  constraint
+      installed[root] == 1;
+  
+  % Ограничения зависимостей
+  constraint
+      (installed[root] == 1) -> (installed[menu_1_0_0] == 1 /\ installed[menu_1_5_0] == 1 /\ installed[icons_1_0_0] == 1) /\
+      (installed[menu_1_5_0] == 1) -> (installed[dropdown_2_3_0] == 1 /\ installed[dropdown_2_0_0] == 1) /\
+      (installed[menu_1_4_0] == 1) -> (installed[dropdown_2_3_0] == 1 /\ installed[dropdown_2_0_0] == 1) /\
+      (installed[menu_1_3_0] == 1) -> (installed[dropdown_2_3_0] == 1 /\ installed[dropdown_2_0_0] == 1) /\
+      (installed[menu_1_2_0] == 1) -> (installed[dropdown_2_3_0] == 1 /\ installed[dropdown_2_0_0] == 1) /\
+      (installed[menu_1_1_0] == 1) -> (installed[dropdown_2_3_0] == 1 /\ installed[dropdown_2_0_0] == 1) /\
+      (installed[menu_1_0_0] == 1) -> (installed[dropdown_1_8_0] == 1) /\
+      (installed[dropdown_2_0_0] == 1) -> (installed[icons_2_0_0] == 1) /\
+      (installed[dropdown_2_1_0] == 1) -> (installed[icons_2_0_0] == 1) /\
+      (installed[dropdown_2_2_0] == 1) -> (installed[icons_2_0_0] == 1) /\
+      (installed[dropdown_2_3_0] == 1) -> (installed[icons_2_0_0] == 1);
+  
+  % Целевая функция: минимизируем количество установленных пакетов
+  solve minimize sum(installed);
+  
+  % Выводим результат
+  output [
+      "Installed packages: ", show(installed)
+  ];
+
   ![Снимок экрана 2024-09-22 221309](https://github.com/user-attachments/assets/9aedc894-8d3e-4e55-a5dd-9e2b513afd13)
 
 
@@ -80,6 +140,39 @@
           target 2.0.0 и 1.0.0 не имеют зависимостей.
 
   РЕШЕНИЕ: 
+
+  % Определяем пакеты
+  enum PACKAGES = {
+      root, 
+      foo_1_0_0, foo_1_1_0, 
+      left_1_0_0, right_1_0_0, 
+      shared_1_0_0, shared_2_0_0, 
+      target_1_0_0, target_2_0_0
+  };
+  
+  % Переменные, указывающие, установлен ли пакет (1) или нет (0)
+  array[PACKAGES] of var 0..1: installed;
+  
+  % Ограничения зависимостей
+  constraint
+      (installed[root] == 1) -> (installed[foo_1_1_0] == 1 /\ installed[target_2_0_0] == 1) /\
+      (installed[foo_1_1_0] == 1) -> (installed[left_1_0_0] == 1 /\ installed[right_1_0_0] == 1) /\
+      (installed[left_1_0_0] == 1) -> (installed[shared_1_0_0] == 1) /\
+      (installed[right_1_0_0] == 1) -> (installed[shared_2_0_0] == 1) /\ (installed[shared_1_0_0] == 0) /\
+      (installed[shared_1_0_0] == 1) -> (installed[target_1_0_0] == 1);
+  
+  % Обязательно устанавливаем root
+  constraint
+      installed[root] == 1;
+  
+  % Целевая функция: минимизируем количество установленных пакетов
+  solve minimize sum(installed);
+  
+  % Выводим результат
+  output [
+      "Installed packages: ", show(installed)
+  ];
+
   ![Снимок экрана 2024-09-22 221858](https://github.com/user-attachments/assets/e22cd150-dd76-454d-bef1-0dd03da6193f)
   ![Снимок экрана 2024-09-22 221920](https://github.com/user-attachments/assets/5f198866-265a-40ee-a211-7b5dff42324c)
 
@@ -87,8 +180,7 @@
 ЗАДАЧА 7. Представить задачу о зависимостях пакетов в общей форме. Здесь необходимо действовать аналогично реальному менеджеру пакетов. То есть получить описание пакета, а также его зависимости в виде структуры данных. Например, в виде словаря. В предыдущих задачах зависимости были явно заданы в системе ограничений. Теперь же систему ограничений надо построить автоматически, по метаданным.
 
   РЕШЕНИЕ:
-  import json
-
+  
   # Пример структуры данных с зависимостями и версиями
   packages = {
       "root": {"dependencies": ["foo", "target"], "version": None},
