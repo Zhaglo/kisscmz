@@ -1,6 +1,9 @@
 ЗАДАЧА 1. Вывести служебную информацию о пакете matplotlib (Python). Разобрать основные элементы содержимого файла со служебной информацией из пакета. Как получить пакет без менеджера пакетов, прямо из репозитория?
-  РЕШЕНИЕ: pip show matplotlib
-  
+  РЕШЕНИЕ: 
+  ```bash
+  pip show matplotlib
+  ```
+
   ![Снимок экрана от 2024-09-16 12-49-38](https://github.com/user-attachments/assets/80502082-8ed9-46ba-ae71-5134f08d2fdf)
   
   Name: Имя пакета (например, matplotlib).
@@ -11,16 +14,22 @@
   License: Лицензия, по которой распространяется пакет.
 
   Получение пакета прямо из репозитория:
+
+  ```bash
   git clone https://github.com/matplotlib/matplotlib.git
   cd matplotlib
   pip install .
-  
+  ```
+
   ![image](https://github.com/user-attachments/assets/06379a90-addf-43ea-a49a-e6cc0b266a1f)
   ![image](https://github.com/user-attachments/assets/bde781d8-0ab6-4ae6-87c6-582668485223)
 
 
 ЗАДАЧА 2. Вывести служебную информацию о пакете express (JavaScript). Разобрать основные элементы содержимого файла со служебной информацией из пакета. Как получить пакет без менеджера пакетов, прямо из репозитория?
-  РЕШЕНИЕ: npm show express
+  РЕШЕНИЕ: 
+  ```bash
+  npm show express
+  ```
 
   ![image](https://github.com/user-attachments/assets/61053961-076d-40dd-bb6c-8da8fa74de16)
 
@@ -37,17 +46,23 @@
   keywords: Список ключевых слов, связанных с проектом, которые могут помочь найти его в каталоге NPM.
 
   Получение пакета прямо из репозитория:
+
+  ```bash
   git clone https://github.com/expressjs/express.git
   cd express
   npm install
-  
+  ```
+
   ![image](https://github.com/user-attachments/assets/61249034-d570-4297-a83c-c0c6793fd9c3)
 
 
 ЗАДАЧА 3. Сформировать graphviz-код и получить изображения зависимостей matplotlib и express.
   РЕШЕНИЕ: 
+  
+  ```bash
   dot -Tpng express_dependencies.dot -o express_dependencies.png
   dot -Tpng matplotlib_dependencies.dot -o matplotlib_dependencies.png
+```
 
   ![image](https://github.com/user-attachments/assets/ea544ab2-652f-410e-93d3-134acf82f304)
   ![image](https://github.com/user-attachments/assets/4143d6b5-76fb-4683-877f-6c8f738dfe2f)
@@ -58,7 +73,8 @@
 ЗАДАЧА 4. Изучить основы программирования в ограничениях. Установить MiniZinc, разобраться с основами его синтаксиса и работы в IDE.
 Решить на MiniZinc задачу о счастливых билетах. Добавить ограничение на то, что все цифры билета должны быть различными (подсказка: используйте all_different). Найти минимальное решение для суммы 3 цифр.
   РЕШЕНИЕ: 
-
+  
+```minizinc
   include "alldifferent.mzn";  % Подключаем библиотеку для alldifferent
 
   % Определяем массив для хранения 6 цифр билета
@@ -79,7 +95,7 @@
       "\nSum of first 3 digits: ", show(sum(digits[1..3])), 
       "\nSum of last 3 digits: ", show(sum(digits[4..6]))
   ];
-
+```
 
   ![Снимок экрана 2024-09-22 214850](https://github.com/user-attachments/assets/5b4ab1ef-1238-47aa-8c17-3f6a9ae03118)
   ![Снимок экрана 2024-09-22 214931](https://github.com/user-attachments/assets/9923e75c-83c8-4736-bb04-6b51e5803d12)
@@ -88,7 +104,8 @@
 ЗАДАЧА 5. Решить на MiniZinc задачу о зависимостях пакетов для рисунка, приведенного ниже. https://github.com/true-grue/kisscm/blob/main/pract/images/pubgrub.png
 
   РЕШЕНИЕ: 
-
+  
+```minizinc
   % Определяем пакеты
   enum PACKAGES = {
       root, 
@@ -125,6 +142,7 @@
   output [
       "Installed packages: ", show(installed)
   ];
+```
 
   ![Снимок экрана 2024-09-22 221309](https://github.com/user-attachments/assets/9aedc894-8d3e-4e55-a5dd-9e2b513afd13)
 
@@ -140,7 +158,8 @@
           target 2.0.0 и 1.0.0 не имеют зависимостей.
 
   РЕШЕНИЕ: 
-
+  
+```minizinc
   % Определяем пакеты
   enum PACKAGES = {
       root, 
@@ -172,6 +191,7 @@
   output [
       "Installed packages: ", show(installed)
   ];
+```
 
   ![Снимок экрана 2024-09-22 221858](https://github.com/user-attachments/assets/e22cd150-dd76-454d-bef1-0dd03da6193f)
   ![Снимок экрана 2024-09-22 221920](https://github.com/user-attachments/assets/5f198866-265a-40ee-a211-7b5dff42324c)
@@ -180,8 +200,9 @@
 ЗАДАЧА 7. Представить задачу о зависимостях пакетов в общей форме. Здесь необходимо действовать аналогично реальному менеджеру пакетов. То есть получить описание пакета, а также его зависимости в виде структуры данных. Например, в виде словаря. В предыдущих задачах зависимости были явно заданы в системе ограничений. Теперь же систему ограничений надо построить автоматически, по метаданным.
 
   РЕШЕНИЕ:
-  
-  // Пример структуры данных с зависимостями и версиями
+
+  ```python
+  # Пример структуры данных с зависимостями и версиями
   packages = {
       "root": {"dependencies": ["foo", "target"], "version": None},
       "foo": {"dependencies": ["left", "right"], "version": None},
@@ -193,12 +214,12 @@
   
   def generate_minizinc_code(packages):
       package_names = ', '.join(packages.keys())
-      // Генерация массива установленных пакетов
+      # Генерация массива установленных пакетов
       minizinc_code = f"enum PACKAGES = {{{package_names}}};\n"
       minizinc_code += "array[PACKAGES] of var 0..1: installed;\n\n"
-      // Добавляем условие для root
+      # Добавляем условие для root
       minizinc_code += "constraint installed[root] == 1;\n"
-      // Генерация ограничений
+      # Генерация ограничений
       for package, details in packages.items():
           dependencies = details["dependencies"]
           if dependencies:
@@ -218,11 +239,14 @@
       return minizinc_code
   
   
-  // Генерация и вывод MiniZinc кода
+  # Генерация и вывод MiniZinc кода
   minizinc_code = generate_minizinc_code(packages)
   print(minizinc_code)
+```
 
   ВЫВОД:
+  
+  ```minizinc
   enum PACKAGES = {root, foo, left, right, shared, target};
   array[PACKAGES] of var 0..1: installed;
   
@@ -234,6 +258,7 @@
   
   solve minimize sum(installed);
   output ["Installed packages: ", show(installed)];
+```
 
   ВЫВОД MiniZinc:
   Installed packages: [1, 1, 1, 1, 1, 1]
