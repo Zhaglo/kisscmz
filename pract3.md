@@ -16,6 +16,7 @@
   }
   ~~~
 
+
 ЗАДАНИЕ 2. Реализовать на Dhall приведенный ниже пример в формате JSON. Использовать в реализации свойство программируемости и принцип DRY.
 
   РЕШЕНИЕ:
@@ -39,3 +40,88 @@
       , subject = "Конфигурационное управление"
       }
   ~~~
+
+
+Для решения дальнейших задач потребуется программа на Питоне, представленная ниже. Разбираться в самом языке Питон при этом необязательно.
+
+~~~
+import random
+
+
+def parse_bnf(text):
+    '''
+    Преобразовать текстовую запись БНФ в словарь.
+    '''
+    grammar = {}
+    rules = [line.split('=') for line in text.strip().split('\n')]
+    for name, body in rules:
+        grammar[name.strip()] = [alt.split() for alt in body.split('|')]
+    return grammar
+
+
+def generate_phrase(grammar, start):
+    '''
+    Сгенерировать случайную фразу.
+    '''
+    if start in grammar:
+        seq = random.choice(grammar[start])
+        return ''.join([generate_phrase(grammar, name) for name in seq])
+    return str(start)
+
+
+BNF = '''
+E = a
+'''
+
+for i in range(10):
+    print(generate_phrase(parse_bnf(BNF), 'E'))
+~~~   
+
+Реализовать грамматики, описывающие следующие языки (для каждого решения привести БНФ). Код решения должен содержаться в переменной BNF:
+
+ЗАДАНИЕ 3. Язык нулей и единиц.
+~~~
+10
+100
+11
+101101
+000
+~~~
+  РЕШЕНИЕ:
+  ~~~
+  BNF = '''
+  E = 0 | 1 | 0 E | 1 E
+  '''
+  ~~~
+  ВЫВОД ПРОГРАММЫ:
+  ![image](https://github.com/user-attachments/assets/c6e7c985-f774-4dde-9de3-6a8e9477c56d)
+
+
+ЗАДАНИЕ 4. Язык правильно расставленных скобок двух видов.
+~~~
+(({((()))}))
+{}
+{()}
+()
+{}
+~~~
+  РЕШЕНИЕ:
+  ~~~
+  BNF = '''
+  E =  | ( E ) | { E } | E E
+  '''
+  ~~~
+  ВЫВОД ПРОГРАММЫ:
+  ![image](https://github.com/user-attachments/assets/5a9bb6fa-1b92-419d-96dc-fd71322ffca3)
+
+
+ЗАДАНИЕ 5. Язык выражений алгебры логики.
+~~~
+((~(y & x)) | (y) & ~x | ~x) & x
+y & ~(y)
+(~(y) & y & ~y)
+~x
+~((x) & y | (y) | (x)) & x | x | (y & ~y)
+~~~
+  РЕШЕНИЕ:
+  
