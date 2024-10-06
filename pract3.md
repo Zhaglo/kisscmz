@@ -24,12 +24,12 @@
       } for student in studentData
     ],
   
-    subject: "Программирование"
+    subject: "Конфигурационное управление"
   }
   ~~~
 
 
-  ![image](https://github.com/user-attachments/assets/f7cfaee6-8426-4ee5-bc5b-313b1f7baeee)
+  ![image](https://github.com/user-attachments/assets/67fee7bd-4c5b-4ee1-acec-75bf8f3e5631)
 
 
 ЗАДАНИЕ 2. Реализовать на Dhall приведенный ниже пример в формате JSON. Использовать в реализации свойство программируемости и принцип DRY.
@@ -68,11 +68,11 @@
     , createStudent 20 (createGroup 4) "Красоткин А. А."
     ]
   
-  in  { groups = groups, students = students, subject = "Программирование" }
+  in  { groups = groups, students = students, subject = "Конфигурационное управление" }
   ~~~
 
 
-  ![image](https://github.com/user-attachments/assets/65616d50-077d-404d-8137-7fe3c55d6776)
+  ![image](https://github.com/user-attachments/assets/e9736cc7-a114-475e-8f96-79da6e2cf9d9)
 
 
 Для решения дальнейших задач потребуется программа на Питоне, представленная ниже. Разбираться в самом языке Питон при этом необязательно.
