@@ -153,41 +153,80 @@
   РЕШЕНИЕ: 
   
 ```minizinc
-  % Определяем пакеты
-  enum PACKAGES = {
-      root, 
-      foo_1_0_0, foo_1_1_0, 
-      left_1_0_0, right_1_0_0, 
-      shared_1_0_0, shared_2_0_0, 
-      target_1_0_0, target_2_0_0
-  };
-  
-  % Переменные, указывающие, установлен ли пакет (1) или нет (0)
-  array[PACKAGES] of var 0..1: installed;
-  
-  % Ограничения зависимостей
-  constraint
-      (installed[root] == 1) -> (installed[foo_1_1_0] == 1 /\ installed[target_2_0_0] == 1) /\
-      (installed[foo_1_1_0] == 1) -> (installed[left_1_0_0] == 1 /\ installed[right_1_0_0] == 1) /\
-      (installed[left_1_0_0] == 1) -> (installed[shared_1_0_0] == 1) /\
-      (installed[right_1_0_0] == 1) -> (installed[shared_2_0_0] == 1) /\ (installed[shared_1_0_0] == 0) /\
-      (installed[shared_1_0_0] == 1) -> (installed[target_1_0_0] == 1);
-  
-  % Обязательно устанавливаем root
-  constraint
-      installed[root] == 1;
-  
-  % Целевая функция: минимизируем количество установленных пакетов
-  solve minimize sum(installed);
-  
-  % Выводим результат
-  output [
-      "Installed packages: ", show(installed)
-  ];
+  enum Package = {
+  root_1_0_0,
+
+  foo_1_1_0,
+  foo_1_0_0,
+
+  left_1_0_0,
+  right_1_0_0,
+
+  shared_2_0_0,
+  shared_1_0_0,
+
+  target_2_0_0,
+  target_1_0_0,
+};
+
+int: n = 7;
+
+array[1..n] of set of Package: targets = [
+  % Deps of root 1.0.0
+  1: { foo_1_1_0, foo_1_0_0 },
+  2: { target_2_0_0 },
+
+  % Deps of foo 1.1.0
+  3: { left_1_0_0 },
+  4: { right_1_0_0 },
+
+  % Deps of left 1.0.0
+  5: { shared_1_0_0, shared_2_0_0 },
+
+  % Deps of right 1.0.0
+  6: { shared_1_0_0 },
+
+  % Deps of shared 1.0.0
+  7: { target_1_0_0 },
+];
+
+% set points to targets array
+array[Package] of set of 1..n: dependencies = [
+  root_1_0_0: { 1, 2 },
+  foo_1_1_0: { 3, 4 },
+  left_1_0_0: { 5 },
+  right_1_0_0: { 6 },
+  shared_1_0_0: { 7 },
+
+  foo_1_0_0: { },
+  shared_2_0_0: { },
+
+  target_2_0_0: { },
+  target_1_0_0: { },
+];
+
+array[Package] of var opt (1..100): install_order;
+
+constraint occurs(install_order[root_1_0_0]);
+
+constraint forall(p in Package where occurs(install_order[p])) (
+  forall(dep in dependencies[p]) (
+    exists(t in targets[dep]) (
+      occurs(install_order[t]) /\
+      install_order[t] < install_order[p]
+    )
+  )
+);
+
+output [
+  if fix(occurs(install_order[p]))
+  then "\(p): \(install_order[p])\n"
+  else ""
+  endif | p in Package
+];
 ```
 
-  ![Снимок экрана 2024-09-22 221858](https://github.com/user-attachments/assets/e22cd150-dd76-454d-bef1-0dd03da6193f)
-  ![Снимок экрана 2024-09-22 221920](https://github.com/user-attachments/assets/5f198866-265a-40ee-a211-7b5dff42324c)
+  ![image](https://github.com/user-attachments/assets/4c9458ef-4984-48b1-aef9-38e5351c5906)
 
 
 ЗАДАЧА 7. Представить задачу о зависимостях пакетов в общей форме. Здесь необходимо действовать аналогично реальному менеджеру пакетов. То есть получить описание пакета, а также его зависимости в виде структуры данных. Например, в виде словаря. В предыдущих задачах зависимости были явно заданы в системе ограничений. Теперь же систему ограничений надо построить автоматически, по метаданным.
