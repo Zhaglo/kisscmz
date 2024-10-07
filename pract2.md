@@ -108,45 +108,36 @@
   РЕШЕНИЕ: 
   
 ```minizinc
-  % Определяем пакеты
-  enum PACKAGES = {
-      root, 
-      menu_1_0_0, menu_1_1_0, menu_1_2_0, menu_1_3_0, menu_1_4_0, menu_1_5_0, 
-      dropdown_2_0_0, dropdown_2_1_0, dropdown_2_2_0, dropdown_2_3_0, dropdown_1_8_0,
-      icons_1_0_0, icons_2_0_0
-  };
+  % Use this editor as a MiniZinc scratch book
+  int: mCount = 6;
+  int: dCount = 5;
+  int: iCount = 2;
+  var 1..mCount: m;
+  var 1..dCount: d;
+  var 1..iCount: i;
   
-  % Переменные, указывающие, установлен ли пакет (1) или нет (0)
-  array[PACKAGES] of var 0..1: installed;
+  array[1..mCount] of tuple(int, int, int): mVersions = 
+    [(1,0,0), (1,1,0), (1,2,0), (1,3,0), (1,4,0), (1,5,0)];
+  array[1..dCount] of tuple(int, int, int): dVersions = 
+    [(1,8,0), (2,0,0), (2,1,0), (2,2,0), (2,3,0)];
+  array[1..iCount] of tuple(int, int, int): iVersions = 
+    [(1,0,0), (2,0,0)];
   
-  % Обязательно устанавливаем root
-  constraint
-      installed[root] == 1;
+  constraint (mVersions[m] == (1,0,0) \/ mVersions[m] == (1, 5, 0) /\ iVersions[i] == (1, 0, 0));
+  constraint (mVersions[m].2 >= 1 /\ mVersions[m].2 <= 5) -> (dVersions[d] == (2, 3, 0) \/ dVersions[d] == (2, 0, 0));
+  constraint mVersions[m] == (1, 0, 0) -> dVersions[d] == (1, 8, 0);
+  constraint (dVersions[d].2 >= 0 /\ dVersions[d].2 <= 3) -> iVersions[i] == (2, 0, 0);
   
-  % Ограничения зависимостей
-  constraint
-      (installed[root] == 1) -> (installed[menu_1_0_0] == 1 /\ installed[menu_1_5_0] == 1 /\ installed[icons_1_0_0] == 1) /\
-      (installed[menu_1_5_0] == 1) -> (installed[dropdown_2_3_0] == 1 /\ installed[dropdown_2_0_0] == 1) /\
-      (installed[menu_1_4_0] == 1) -> (installed[dropdown_2_3_0] == 1 /\ installed[dropdown_2_0_0] == 1) /\
-      (installed[menu_1_3_0] == 1) -> (installed[dropdown_2_3_0] == 1 /\ installed[dropdown_2_0_0] == 1) /\
-      (installed[menu_1_2_0] == 1) -> (installed[dropdown_2_3_0] == 1 /\ installed[dropdown_2_0_0] == 1) /\
-      (installed[menu_1_1_0] == 1) -> (installed[dropdown_2_3_0] == 1 /\ installed[dropdown_2_0_0] == 1) /\
-      (installed[menu_1_0_0] == 1) -> (installed[dropdown_1_8_0] == 1) /\
-      (installed[dropdown_2_0_0] == 1) -> (installed[icons_2_0_0] == 1) /\
-      (installed[dropdown_2_1_0] == 1) -> (installed[icons_2_0_0] == 1) /\
-      (installed[dropdown_2_2_0] == 1) -> (installed[icons_2_0_0] == 1) /\
-      (installed[dropdown_2_3_0] == 1) -> (installed[icons_2_0_0] == 1);
+  solve satisfy;
   
-  % Целевая функция: минимизируем количество установленных пакетов
-  solve minimize sum(installed);
-  
-  % Выводим результат
   output [
-      "Installed packages: ", show(installed)
+    "Menu version: ", show(mVersions[m]), "\n",
+    "Dropdown version: ", show(dVersions[d]), "\n",
+    "Icon version: ", show(iVersions[i]), "\n"
   ];
 ```
 
-  ![Снимок экрана 2024-09-22 221309](https://github.com/user-attachments/assets/9aedc894-8d3e-4e55-a5dd-9e2b513afd13)
+  ![image](https://github.com/user-attachments/assets/8cb70f10-be2b-4a80-86e8-73e35cacf8e5)
 
 
 ЗАДАЧА 6. Решить на MiniZinc задачу о зависимостях пакетов для следующих данных:
