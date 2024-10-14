@@ -190,4 +190,5 @@ y & ~(y)
 
   ВЫВОД ПРОГРАММЫ:
   
-  ![image](https://github.com/user-attachments/assets/8170e94c-479a-424a-825d-1039e1018e66)
+  ![image](https://github.com/user-attachments/assets/05c8acb9-e8d1-468d-bb5f-cd5a85c025b7)
+
