@@ -180,7 +180,6 @@ y & ~(y)
           return ''.join([generate_phrase(grammar, name) for name in seq])
       return str(start)
   
-  
   BNF = '''
   E = x / y / ( E ) / ~ E / E & E / E | E
   '''
@@ -190,4 +189,5 @@ y & ~(y)
   ~~~
 
   ВЫВОД ПРОГРАММЫ:
+  
   ![image](https://github.com/user-attachments/assets/8170e94c-479a-424a-825d-1039e1018e66)
